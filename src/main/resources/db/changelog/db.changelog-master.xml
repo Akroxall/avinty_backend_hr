@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+						http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+						http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+	<changeSet id="createTable" author="Sandor Konyves">
+		<sql>CREATE TYPE hr.enum_positons AS ENUM ('COLLEAGUE','MANAGER','CEO');</sql>
+		<createTable tableName="employees">
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="full_name" type="VARCHAR">
+				<constraints nullable="false" />
+			</column>
+			<column name="email" type="VARCHAR">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="position" type="hr.enum_positons">
+				<constraints nullable="false" />
+			</column>
+			<column name="department_id" type="INT">
+				<constraints nullable="true" />
+			</column>
+			<column name="created_at" type="TIMESTAMP">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+			<column name="modified_at" type="TIMESTAMP">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_by" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<createTable tableName="departments">
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="VARCHAR">
+				<constraints nullable="false" />
+			</column>
+			<column name="manager_id" type="INT">
+				<constraints nullable="true" />
+			</column>
+			<column name="created_at" type="TIMESTAMP">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+			<column name="modified_at" type="TIMESTAMP">
+				<constraints nullable="false" />
+			</column>
+			<column name="modified_by" type="NUMBER">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="departments" baseColumnNames="manager_id" constraintName="FK_MANAGER_ID" referencedTableName="employees" referencedColumnNames="id" />
+		<addForeignKeyConstraint baseTableName="employees" baseColumnNames="department_id" constraintName="FK_DEPARTMENT_ID" referencedTableName="departments" referencedColumnNames="id" />
+	</changeSet>
+	<changeSet id="insertExempleDatas" author="Sandor Konyves">
+		<insert tableName="departments">
+			<column name="name" value="CEO" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="departments">
+			<column name="name" value="Human Resources" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="departments">
+			<column name="name" value="Operations" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="departments">
+			<column name="name" value="Sales" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Otho Jevrem" />
+			<column name="department_id" value="1" />
+			<column name="position" value="CEO" />
+			<column name="email" value="otho.jevrem@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<update tableName="departments">
+			<column name="manager_id" value="1" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+			<where>name = 'CEO'</where>
+		</update>
+		<insert tableName="employees">
+			<column name="full_name" value="Emil Iskandar" />
+			<column name="department_id" value="2" />
+			<column name="position" value="MANAGER" />
+			<column name="email" value="emil.iskandar@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<update tableName="departments">
+			<column name="manager_id" value="2" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+			<where>name = 'Human Resources'</where>
+		</update>
+		<insert tableName="employees">
+			<column name="full_name" value="Tabitha Pasco" />
+			<column name="department_id" value="2" />
+			<column name="position" value="COLLEAGUE" />
+			<column name="email" value="tabitha.pasco@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Swathi Blažena" />
+			<column name="department_id" value="2" />
+			<column name="position" value="COLLEAGUE" />
+			<column name="email" value="swathi.blazena@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Armen Kamakshi" />
+			<column name="department_id" value="2" />
+			<column name="position" value="COLLEAGUE" />
+			<column name="email" value="armen.kamakshi@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Eszter Ermendrud" />
+			<column name="department_id" value="3" />
+			<column name="position" value="MANAGER" />
+			<column name="email" value="eszter.ermendrud@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Marie Wulfflæd" />
+			<column name="department_id" value="3" />
+			<column name="position" value="MANAGER" />
+			<column name="email" value="marie.wulfflaed@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Valdís Halsten" />
+			<column name="department_id" value="3" />
+			<column name="position" value="COLLEAGUE" />
+			<column name="email" value="valdis.halsten@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<insert tableName="employees">
+			<column name="full_name" value="Marylou Kent" />
+			<column name="department_id" value="3" />
+			<column name="position" value="COLLEAGUE" />
+			<column name="email" value="marylou.kent@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<update tableName="departments">
+			<column name="manager_id" value="3" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+			<where>name = 'Operations'</where>
+		</update>
+		<insert tableName="employees">
+			<column name="full_name" value="Florine Delicia" />
+			<column name="department_id" value="4" />
+			<column name="position" value="MANAGER" />
+			<column name="email" value="florine.delicia@avinty.eu" />
+			<column name="created_at" valueComputed="CURRENT_TIMESTAMP" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+		</insert>
+		<update tableName="departments">
+			<column name="manager_id" value="4" />
+			<column name="modified_at" valueComputed="CURRENT_TIMESTAMP" />
+			<where>name = 'Sales'</where>
+		</update>
+	</changeSet>
+	<changeSet id="AddPasswordColumnToEmployee" author="Sandor Konyves">
+		<addColumn tableName="employees">
+			<column name="password" type="VARCHAR" defaultValue="$2a$10$82FKNiHxDEcJ8AVS9R0Svu4hn96y8MZ.EOnJexdnnILCUzFgegMqu" defaultOnNull="true"/>
+		</addColumn>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,28 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Pass1234!
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    default-schema: hr    
+  jpa:
+    properties:
+      '[hibernate.default_schema]' : hr
+      '[hibernate.dialect]': org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    '[org.hibernate.sql]': debug
+    '[org.hibernate.jpa]': debug
+jwt-config:
+  jwt-secret: hX8E(F5Dkj-MLr44*S70
+  jwt-expiration: PT24H
+
+    
+   
+    
